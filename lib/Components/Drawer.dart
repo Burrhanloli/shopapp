@@ -1,8 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shopapp/autentication_bloc/bloc.dart';
+
 import 'ThemeColors.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends StatefulWidget {
+  CustomDrawer({Key key}) : super(key: key);
+
+  @override
+  _CustomDrawerState createState() => _CustomDrawerState();
+}
+
+class _CustomDrawerState extends State<CustomDrawer> {
   var splashColour = kprimaryLightColor.withOpacity(0.5);
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,12 +25,8 @@ class CustomDrawer extends StatelessWidget {
     return Drawer(
       elevation: 4.0,
       child: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [kprimaryColor, kprimaryDarkColor, Colors.black87],
-                end: Alignment.topCenter,
-                begin: Alignment.bottomCenter,
-                tileMode: TileMode.repeated)),
+        color: ksecondaryDarkColor,
+//        decoration: BoxDecoration(),
         child: Column(
           children: <Widget>[
             Expanded(
@@ -25,19 +36,27 @@ class CustomDrawer extends StatelessWidget {
                 children: <Widget>[
                   //header
                   UserAccountsDrawerHeader(
-                    accountName: Text('UserName',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
-                    accountEmail: Text(
-                      'email@gmail.com',
-                      style:
-                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    ),
+                    accountName: BlocBuilder(
+                        bloc: BlocProvider.of<AuthenticationBloc>(context),
+                        builder:
+                            (BuildContext context, AuthenticationState state) {
+                          if (state is Authenticated) {
+                            return Text("${state.displayName}",
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.bold));
+                          }
+                        }),
+//                    accountEmail: Text(
+//                      '${_userRepository.getUser().toString()}',
+//                      style:
+//                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+//                    ),
                     currentAccountPicture: GestureDetector(
                       child: CircleAvatar(
                         backgroundColor: Colors.white,
                         child: Icon(
                           Icons.perm_identity,
+                          color: Theme.of(context).accentColor,
                         ),
                       ),
                     ),
@@ -45,7 +64,10 @@ class CustomDrawer extends StatelessWidget {
                   ),
                   InkWell(
                     highlightColor: splashColour,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.of(context).pushNamed('/');
+                    },
                     child: ListTile(
                       title: Text('Home',
                           style: TextStyle(fontSize: 17, color: Colors.white)),
@@ -68,8 +90,11 @@ class CustomDrawer extends StatelessWidget {
                     ),
                   ),
                   InkWell(
-                    highlightColor: splashColour,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pop(context);
+                      BlocProvider.of<AuthenticationBloc>(context)
+                          .dispatch(LoggedOut());
+                    },
                     child: ListTile(
                       title: Text('Logout',
                           style: TextStyle(fontSize: 17, color: Colors.white)),

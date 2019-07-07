@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopapp/Components/PageIndicator.dart';
 import 'package:shopapp/Pages/ProductDetails.dart';
+import 'package:shopapp/models/Products.dart';
+import 'package:shopapp/product_bloc/bloc.dart';
+import 'ThemeColors.dart';
 
 import '../data.dart';
 
@@ -12,49 +16,28 @@ class ProductList extends StatefulWidget {
 class _ProductListState extends State<ProductList> {
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: SizedBox(
-        height: 500.0,
-        child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            physics: BouncingScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: productList.length,
-            itemBuilder: (BuildContext context, int index) {
-              return SingleProduct(
-                productDescription: productList[index]["description"],
-                productImages: productList[index]["pictures"],
-                productName: productList[index]['name'],
-                productImage: productList[index]['picture'],
-                productMaterial: productList[index]['material'],
-              );
-            }),
-      ),
-    );
+    return ListView.builder(
+        scrollDirection: Axis.horizontal,
+        physics: BouncingScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: products.length,
+        itemBuilder: (BuildContext context, int index) {
+          return SingleProduct(products[index]);
+        });
   }
 }
 
 class SingleProduct extends StatelessWidget {
-  final productName;
-  final productImage;
-  final productDescription;
-  final List<String> productImages;
-  final List<String> productMaterial;
+  final Product product;
 
-  SingleProduct(
-      {this.productName,
-      this.productImage,
-      this.productMaterial,
-      this.productImages,
-      this.productDescription});
+  SingleProduct(this.product);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 35.0, bottom: 60.0),
-      child: SizedBox(
-        width: 200.0,
+      padding: EdgeInsets.only(left: 35.0, bottom: 50.0),
+      child: Container(
+        width: 300.0,
         child: Stack(
           fit: StackFit.expand,
           children: <Widget>[
@@ -65,9 +48,13 @@ class SingleProduct extends StatelessWidget {
                   color: Colors.white,
                   boxShadow: [
                     BoxShadow(
-                        color: Colors.black12,
-                        offset: Offset(0.0, 10.0),
-                        blurRadius: 10.0)
+                        color: Theme.of(context).accentColor.withOpacity(0.5),
+                        offset: Offset(0.0, 5.0),
+                        blurRadius: 15.0),
+                    BoxShadow(
+                        color: Theme.of(context).accentColor.withOpacity(0.5),
+                        offset: Offset(0.0, -5.0),
+                        blurRadius: 15.0)
                   ],
                   borderRadius: BorderRadius.circular(15.0),
                 ),
@@ -77,54 +64,78 @@ class SingleProduct extends StatelessWidget {
               borderRadius: BorderRadius.circular(15.0),
               onTap: () => Navigator.of(context).push(new MaterialPageRoute(
                   builder: (context) => new ProductDetails(
-                        productDescription: productDescription,
-                        productName: productName,
-                        productImages: productImages,
-                        productMaterial: productMaterial,
-                        productImage: productImage,
+                        product: product,
                       ))),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  Image.asset(
-                    productImage,
-                    width: 170.0,
-                    height: 200.0,
+                  Flexible(
+                    flex: 2,
+                    child: Image.asset(
+                      product.productImage,
+                      width: 170.0,
+                      height: 200.0,
+                    ),
                   ),
-                  SizedBox(
-                    height: 12.0,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(12.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          productName,
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.black87),
-                        ),
-                        SizedBox(height: 60.0),
-                        Text(
-                          "Materials",
-                          style: TextStyle(
-                              fontSize: 15.0,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.black54),
-                        ),
-                        ChipForMaterials(true, productMaterial)
-//                        Chip(
-//                            label: Text(
-//                          productMaterial[0],
-//                          style: TextStyle(
-//                            fontSize: 15.0,
-//                            fontWeight: FontWeight.w900,
-////                            color: Theme.of(context).primaryColor
-//                          ),
-//                        ))
-                      ],
+                  Flexible(
+                    flex: 5,
+                    child: Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Flexible(flex: 1,child: Container(),),
+                          Flexible(
+                            flex: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                product.productName,
+                                style: TextStyle(
+                                    fontSize: 22.0,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.black87),
+                              ),
+                            ),
+                          ),
+                          Flexible(flex: 1,child: Container(),),
+                          Flexible(
+                            flex: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Materials",
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.black54),
+                              ),
+                            ),
+                          ),
+                          Container(
+                              height: 50,
+                              width: 290,
+                              child: ChipForMaterials(true, productMaterial)),
+                          Flexible(flex: 1,child: Container(),),
+                          Flexible(
+                            flex: 2,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Sizes",
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w900,
+                                    color: Colors.black54),
+                              ),
+                            ),
+                          ),
+                          Container(
+                              height: 50,
+                              width: 290,
+                              child: ChipForMaterials(true, productSizes))
+                        ],
+                      ),
                     ),
                   )
                 ],

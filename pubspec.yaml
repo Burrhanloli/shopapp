@@ -10,12 +10,23 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.0.0-dev.68.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
 
 dependencies:
   carousel_pro: ^0.0.13
   flutter:
     sdk: flutter
+  cloud_firestore:
+  firebase_auth:
+  google_sign_in:
+  flutter_bloc:
+  bloc:
+  equatable:
+  meta:
+  font_awesome_flutter:
+  firebase_core:
+  shared_preferences:
+  lombok:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -39,21 +50,25 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - images/c1.jpg
-     - images/m1.jpeg
-     - images/w3.jpeg
-     - images/w4.jpeg
-     - images/m2.jpg
-     - images/cats/tshirt.png
-     - images/cats/dress.png
-     - images/cats/formal.png
-     - images/cats/informal.png
-     - images/cats/shoe.png
-     - images/cats/jeans.png
-     - images/cats/accessories.png
-     - images/products/blazer1.jpeg
-     - images/products/dress1.jpeg
-     - images/droplet.jpg
+    - images/c1.jpg
+    - images/m1.jpeg
+    - images/w3.jpeg
+    - images/w4.jpeg
+    - images/m2.jpg
+    - images/cats/tshirt.png
+    - images/cats/dress.png
+    - images/cats/formal.png
+    - images/cats/informal.png
+    - images/cats/shoe.png
+    - images/cats/jeans.png
+    - images/cats/accessories.png
+    - images/products/image_01.png
+    - images/products/image_02.png
+    - images/products/image_03.png
+    - images/products/image_04.png
+    - images/products/image_05.png
+    - images/products/image_05.jpg
+    - images/droplet.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.io/assets-and-images/#resolution-aware.
@@ -77,6 +92,19 @@ flutter:
         - asset: fonts/Roboto/Roboto-Black.ttf
         - asset: fonts/Roboto/Roboto-Bold.ttf
           weight: 700
+
+    - family: Montserrat-Bold
+      fonts:
+        - asset: fonts/Montserrat/Montserrat-Bold.ttf
+          weight: 700
+    - family: Montserrat-Black
+      fonts:
+        - asset: fonts/Montserrat/Montserrat-Black.ttf
+
+    - family: Montserrat-Medium
+      fonts:
+        - asset: fonts/Montserrat/Montserrat-Medium.ttf
+
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages
