@@ -46,11 +46,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                     fontSize: 18, fontWeight: FontWeight.bold));
                           }
                         }),
-//                    accountEmail: Text(
-//                      '${_userRepository.getUser().toString()}',
-//                      style:
-//                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-//                    ),
+
                     currentAccountPicture: GestureDetector(
                       child: CircleAvatar(
                         backgroundColor: Colors.white,
