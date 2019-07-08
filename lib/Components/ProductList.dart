@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shopapp/Components/PageIndicator.dart';
 import 'package:shopapp/Pages/ProductDetails.dart';
 import 'package:shopapp/models/Products.dart';
-import 'package:shopapp/product_bloc/bloc.dart';
-import 'ThemeColors.dart';
 
 import '../data.dart';
 

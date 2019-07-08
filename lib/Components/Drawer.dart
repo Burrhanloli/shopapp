@@ -56,7 +56,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         ),
                       ),
                     ),
-                    decoration: BoxDecoration(),
+                    decoration: BoxDecoration(), accountEmail: null,
                   ),
                   InkWell(
                     highlightColor: splashColour,
