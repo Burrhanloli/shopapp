@@ -82,6 +82,7 @@ class _AppState extends State<App> {
               return LoginScreen(userRepository: _userRepository);
             }
             if (state is Authenticated) {
+              //Added for test
               return NewHomeScreen();
             }
           },
